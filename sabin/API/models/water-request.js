@@ -24,6 +24,10 @@ const requestSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  status: {
+    type: String,
+  }
 });
 
 // __v is to be ignored.

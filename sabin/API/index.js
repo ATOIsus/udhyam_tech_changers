@@ -1,5 +1,6 @@
 require('dotenv').config()           
 const portRoute = process.env.PORT
+const upload = require('./middlewares/upload-image')
 
 //Importing routes.
 const user_routes = require('./routes/user-routes')
@@ -22,6 +23,8 @@ const app = express()
 // For request to take JSON files.
 app.use(express.json())
 
+// To access images.
+app.use(express.static('public'))
 
 app.listen(portRoute, () =>{
     console.log(`Server is running in ${portRoute}`)  
@@ -30,6 +33,18 @@ app.listen(portRoute, () =>{
 //Using routes from another file
 app.use('/api/user', user_routes)
 app.use('/api/supplier', supplier_routes)
+
+//To upload photos.
+app.post('/api/upload', upload, (req, res, next) => {
+   
+    if (!req.file) {
+        return res.status(400).send({ error: "No image received!" });
+    }
+    res.status(200).json({
+        success: true,
+        data: req.file.filename,
+    });
+})
 
 //Unknown Path.
 app.use((req, res) => {

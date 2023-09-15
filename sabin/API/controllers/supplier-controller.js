@@ -34,10 +34,9 @@ const getRequests = (req, res, next) => {
           contactNumber: lst.contactNumber,
           price: lst.price,
           accept: lst.accept,
+          status: lst.status
         });
       });
-
-      console.log(filteredList);
 
       res.json({ data: filteredList });
     })

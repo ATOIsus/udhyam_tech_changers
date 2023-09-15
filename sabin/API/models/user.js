@@ -32,10 +32,15 @@ const userSchema = new mongoose.Schema({
 
   userPhoto: {
     type: String,
+    default: "uploads/mountain.jpeg"
   },
 
   //Embedded document.
   waterRequest: [waterRequestSchema],
+
+  satisfied: {
+    type: Boolean
+  }
 });
 
 //Making sure password is not exposed.
