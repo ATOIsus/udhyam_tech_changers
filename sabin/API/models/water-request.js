@@ -12,10 +12,12 @@ const requestSchema = new mongoose.Schema({
 
   contactNumber: {
     type: String,
+    required: true,
   },
 
   price: {
     type: String,
+    required: true,
   },
 
   accept: {

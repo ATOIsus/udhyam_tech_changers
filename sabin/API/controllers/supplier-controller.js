@@ -39,7 +39,7 @@ const getRequests = (req, res, next) => {
 
       console.log(filteredList);
 
-      //res.json({ data: separateLst });
+      res.json({ data: filteredList });
     })
     .catch(next);
 };
