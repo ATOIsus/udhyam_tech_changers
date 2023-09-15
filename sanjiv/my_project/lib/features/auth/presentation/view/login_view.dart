@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../common/custom_textformfield.dart';
-import '../router/app_routes.dart';
+import '../../../../core/common/custom_textformfield.dart';
+import '../../../../config/router/app_routes.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -108,6 +108,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           context, AppRoutes.registerRoute);
                     },
                     child: const Text('Don\'t have an account ? Register Here'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(
+                          context, AppRoutes.dashboardRoute);
+                    },
+                    child: const Text('Dashboard'),
                   ),
                 ],
               ),

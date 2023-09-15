@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../common/custom_textformfield.dart';
-import '../router/app_routes.dart';
+import '../../../../core/common/custom_textformfield.dart';
+import '../../../../config/router/app_routes.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -82,29 +82,29 @@ class _RegisterViewState extends State<RegisterView> {
                       frontIcon: Icons.person,
                       name: 'Full Name'),
                   _gap,
-                  DropdownButtonFormField(
-                    items: _role
-                        .map((e) => DropdownMenuItem(
-                              value: e,
-                              child: Text(e.toString()),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      _userRole = value;
-                      print('User role : $_userRole');
-                    },
-                    value: _userRole,
-                    decoration: const InputDecoration(
-                      labelText: 'Select Role',
-                    ),
-                    validator: ((value) {
-                      if (value == null) {
-                        return 'Please select role';
-                      }
-                      return null;
-                    }),
-                  ),
-                  _gap,
+                  // DropdownButtonFormField(
+                  //   items: _role
+                  //       .map((e) => DropdownMenuItem(
+                  //             value: e,
+                  //             child: Text(e.toString()),
+                  //           ))
+                  //       .toList(),
+                  //   onChanged: (value) {
+                  //     _userRole = value;
+                  //     print('User role : $_userRole');
+                  //   },
+                  //   value: _userRole,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Select Role',
+                  //   ),
+                  //   validator: ((value) {
+                  //     if (value == null) {
+                  //       return 'Please select role';
+                  //     }
+                  //     return null;
+                  //   }),
+                  // ),
+                  // _gap,
                   CustomTextFormWidget(
                       fullNameController: _locationController,
                       frontIcon: Icons.location_on,
