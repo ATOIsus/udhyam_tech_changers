@@ -41,6 +41,15 @@ class _LogedTimeTableState extends State<LogedTimeTable> {
                     ),
                   ),
                 ),
+                const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    "thamel",
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
