@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -11,7 +12,6 @@ class _LoginViewState extends State<LoginView> {
   final _gap = const SizedBox(height: 30);
 
   final _formKey = GlobalKey<FormState>();
-  final String _name = 'Full name';
 
   final _fullNameController = TextEditingController();
   final _locationController = TextEditingController();
@@ -19,7 +19,9 @@ class _LoginViewState extends State<LoginView> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final bool _hidePassword = true;
+  bool _hidePassword = true;
+
+  IconData _hideIcon = FontAwesomeIcons.eyeSlash;
 
   @override
   void dispose() {
@@ -58,23 +60,56 @@ class _LoginViewState extends State<LoginView> {
                   _gap,
                   CustomTextFormWidget(
                       fullNameController: _fullNameController,
+                      frontIcon: Icons.person,
                       name: 'Full Name'),
                   _gap,
                   CustomTextFormWidget(
                       fullNameController: _locationController,
+                      frontIcon: Icons.location_on,
                       name: 'Location'),
                   _gap,
                   CustomTextFormWidget(
                     fullNameController: _contactController,
+                    frontIcon: Icons.phone,
                     name: 'Contact',
                     keyboardType: TextInputType.number,
                   ),
                   _gap,
-                  CustomTextFormWidget(
-                      fullNameController: _passwordController,
-                      hide: _hidePassword,
-                      name: 'Password'),
+                  TextFormField(
+                    obscureText: _hidePassword,
+                    controller: _passwordController,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please, enter password'
+                        : null,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.password),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            if (_hidePassword) {
+                              setState(() {
+                                _hidePassword = false;
+                                _hideIcon = Icons.remove_red_eye;
+                              });
+                            } else {
+                              setState(() {
+                                _hidePassword = true;
+                                _hideIcon = FontAwesomeIcons.eyeSlash;
+                              });
+                            }
+                          },
+                          icon: Icon(_hideIcon)),
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+                    ),
+                  ),
                   _gap,
+                  // CustomTextFormWidget(
+                  //     fullNameController: _passwordController,
+                  //     frontIcon: Icons.password,
+                  //     hide: _hidePassword,
+                  //     name: 'Password'),
                   ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -99,15 +134,18 @@ class CustomTextFormWidget extends StatelessWidget {
     required String name,
     bool? hide,
     TextInputType? keyboardType,
+    required IconData frontIcon,
   })  : _fullNameController = fullNameController,
         _name = name,
         _hide = hide ?? false,
-        _keyboardType = keyboardType ?? TextInputType.name;
+        _keyboardType = keyboardType ?? TextInputType.name,
+        _frontIcon = frontIcon;
 
   final TextEditingController _fullNameController;
   final String _name;
   final bool _hide;
   final TextInputType _keyboardType;
+  final IconData _frontIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +156,8 @@ class CustomTextFormWidget extends StatelessWidget {
       validator: (value) =>
           value == null || value.isEmpty ? 'Please, enter $_name' : null,
       decoration: InputDecoration(
+        prefixIcon: Icon(_frontIcon),
+        prefixIconColor: Colors.black,
         hintText: 'Enter $_name',
         labelText: _name,
         border: OutlineInputBorder(

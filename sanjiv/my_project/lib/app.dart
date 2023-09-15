@@ -11,6 +11,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: AppRoutes.getApplicationRoutes(),
       initialRoute: AppRoutes.splashRoute,
+      
     );
   }
 }
