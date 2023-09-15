@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_project/app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'app.dart';
 
 void main() {
-  runApp(const App());
+  runApp(const ProviderScope(child: App()));
 }

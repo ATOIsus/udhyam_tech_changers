@@ -1,5 +1,6 @@
-import 'package:my_project/view/login_view.dart';
 
+import '../view/login_view.dart';
+import '../view/register_view.dart';
 import '../view/splash_view.dart';
 
 class AppRoutes {
@@ -11,6 +12,7 @@ class AppRoutes {
     return {
       splashRoute: (context) => const SplashView(),
       loginRoute: (context) => const LoginView(),
+      registerRoute: (context) => const RegisterView(),
     };
   }
 }
