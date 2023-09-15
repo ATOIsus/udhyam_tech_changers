@@ -1,9 +1,9 @@
-import '../../features/home/presentation/view/dashboard_view.dart';
+import '../../features/auth/presentation/view/login_view.dart';
+import '../../features/auth/presentation/view/register_view.dart';
 import '../../features/home/presentation/view/dashboard/home_view.dart';
 import '../../features/home/presentation/view/dashboard/profile_view.dart';
 import '../../features/home/presentation/view/dashboard/routine_view.dart';
-import '../../features/auth/presentation/view/login_view.dart';
-import '../../features/auth/presentation/view/register_view.dart';
+import '../../features/home/presentation/view/dashboard_view.dart';
 import '../../features/splash/presentation/view/splash_view.dart';
 
 class AppRoutes {
@@ -23,7 +23,7 @@ class AppRoutes {
       dashboardRoute: (context) => const DashboardView(),
       homeRoute: (context) => const HomeView(),
       profileRoute: (context) => const ProfileView(),
-      routineRoute: (context) => const RoutineView(),
+      routineRoute: (context) => RoutineView(),
     };
   }
 }

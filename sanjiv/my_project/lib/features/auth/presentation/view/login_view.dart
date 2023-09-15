@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../core/common/custom_textformfield.dart';
 import '../../../../config/router/app_routes.dart';
+import '../../../../core/common/custom_textformfield.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -23,6 +23,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
   bool _hidePassword = true;
 
   IconData _hideIcon = Icons.remove_red_eye;
+
+  void _submitLogin() {
+    final contact = _contactController.text.trim();
+    final password = _passwordController.text.trim();
+
+    print('Contact : $contact Password : $password');
+    // ref.read(authViewModelProvider.notifier).login(_user);
+  }
 
   @override
   void dispose() {
@@ -96,7 +104,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        print('register');
+                        print('login');
+                        _submitLogin();
                       }
                     },
                     child: const Text('Register'),

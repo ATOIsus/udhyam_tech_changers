@@ -22,7 +22,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   }
 
   final List<Widget> _screens = [
-    const RoutineView(),
+    RoutineView(),
     const HomeView(),
     const ProfileView(),
   ];

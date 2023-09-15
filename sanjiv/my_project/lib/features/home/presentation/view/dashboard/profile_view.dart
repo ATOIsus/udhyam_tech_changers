@@ -138,6 +138,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   _gap,
                   Text('Location : ', style: _textStyle),
                   _gap,
+                  Text('Address : ', style: _textStyle),
+                  _gap,
                   Text('Contact : ', style: _textStyle),
                   _gap,
                 ],

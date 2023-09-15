@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:my_project/features/auth/domain/entity/user_entity.dart';
 
-import '../../../../core/common/custom_textformfield.dart';
 import '../../../../config/router/app_routes.dart';
+import '../../../../core/common/custom_textformfield.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -18,7 +19,7 @@ class _RegisterViewState extends State<RegisterView> {
   final _role = ['User', 'Supplier'];
 
   final _fullNameController = TextEditingController();
-  final _locationController = TextEditingController();
+  final _addressController = TextEditingController();
   final _contactController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -32,7 +33,7 @@ class _RegisterViewState extends State<RegisterView> {
   void dispose() {
     super.dispose();
 
-    _locationController.dispose();
+    _addressController.dispose();
     _usernameController.dispose();
     _contactController.dispose();
     _fullNameController.dispose();
@@ -41,7 +42,7 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   void _resetControllers() {
-    _locationController.clear();
+    _addressController.clear();
     _usernameController.clear();
     _contactController.clear();
     _fullNameController.clear();
@@ -61,6 +62,18 @@ class _RegisterViewState extends State<RegisterView> {
         _hideIcon = Icons.remove_red_eye;
       });
     }
+  }
+
+  void _submitRegister() {
+    UserEntity newUser = UserEntity(
+      fullName: _fullNameController.text.trim(),
+      contactNumber: _contactController.text.trim(),
+      address: _addressController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+    
+
+    print('New user details : $newUser');
   }
 
   @override
@@ -106,9 +119,9 @@ class _RegisterViewState extends State<RegisterView> {
                   // ),
                   // _gap,
                   CustomTextFormWidget(
-                      fullNameController: _locationController,
+                      fullNameController: _addressController,
                       frontIcon: Icons.location_on,
-                      name: 'Location'),
+                      name: 'address'),
                   _gap,
                   CustomTextFormWidget(
                     fullNameController: _contactController,
@@ -140,7 +153,8 @@ class _RegisterViewState extends State<RegisterView> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        print('loging');
+                        print('Register');
+                        _submitRegister();
                       }
                     },
                     child: const Text('Login'),
