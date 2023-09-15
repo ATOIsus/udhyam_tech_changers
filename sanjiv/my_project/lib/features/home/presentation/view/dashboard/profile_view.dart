@@ -1,9 +1,16 @@
 import 'dart:io';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../../../../../config/constants/api_endpoints.dart';
+import '../../../../../core/common/snackbar_message.dart';
+import '../../../../../core/shared_prefs/user_shared_prefs.dart';
+import '../../../../auth/domain/entity/user_entity.dart';
+import '../../../../auth/presentation/viewmodel/auth_viewmodel.dart';
 
 class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({super.key});
@@ -82,8 +89,31 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     );
   }
 
+  void _getUserData() async {
+    UserSharedPrefs userSharedPrefs = UserSharedPrefs();
+    var data = await userSharedPrefs.getUser();
+    data.fold((l) {
+      showSnackbarMsg(
+          context: context,
+          targetTitle: 'Error',
+          targetMessage: 'Failed to fetch user data',
+          type: ContentType.failure);
+    }, (r) => user = r!);
+
+    print('Reading user data from home : $user');
+  }
+
+  late UserEntity? user;
+  @override
+  void initState() {
+    super.initState();
+
+    _getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
+    UserEntity? user = ref.watch(authViewModelProvider).singleUser;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -100,16 +130,13 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     children: [
                       CircleAvatar(
                         radius: 100,
-
                         backgroundImage: _img != null
                             ? FileImage(_img!)
-                            : const NetworkImage(
-                                'https://img.freepik.com/free-psd/3d-icon-social-media-app_23-2150049569.jpg?w=740&t=st=1694796086~exp=1694796686~hmac=97f185f13daf2fb34ff9271c4e52ea2e197129c57da43b568a2f1d102480ad8a',
+                            : NetworkImage(
+                                // 'https://img.freepik.com/free-psd/3d-icon-social-media-app_23-2150049569.jpg?w=740&t=st=1694796086~exp=1694796686~hmac=97f185f13daf2fb34ff9271c4e52ea2e197129c57da43b568a2f1d102480ad8a',
+                                // ApiEndpoints.imageUrl + user!.userPhoto!,
+                                '${ApiEndpoints.imageUrl}${user!.userPhoto!}',
                               ) as ImageProvider,
-
-                        // backgroundImage: NetworkImage(
-                        //   'https://img.freepik.com/free-psd/3d-icon-social-media-app_23-2150049569.jpg?w=740&t=st=1694796086~exp=1694796686~hmac=97f185f13daf2fb34ff9271c4e52ea2e197129c57da43b568a2f1d102480ad8a',
-                        // ),
                       ),
                       Positioned(
                         bottom: 5,
@@ -132,15 +159,13 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     ],
                   ),
                   _gap,
-                  Text('Full Name : ', style: _textStyle),
+                  Text('Full Name : ${user!.fullName}', style: _textStyle),
                   _gap,
-                  Text('Role : ', style: _textStyle),
+                  Text('Role : ${user.role}', style: _textStyle),
                   _gap,
-                  Text('Location : ', style: _textStyle),
+                  Text('Address : ${user.address}', style: _textStyle),
                   _gap,
-                  Text('Address : ', style: _textStyle),
-                  _gap,
-                  Text('Contact : ', style: _textStyle),
+                  Text('Contact : ${user.contactNumber}', style: _textStyle),
                   _gap,
                 ],
               ),

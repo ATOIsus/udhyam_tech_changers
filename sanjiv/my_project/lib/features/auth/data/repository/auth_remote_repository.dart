@@ -18,8 +18,8 @@ class AuthRemoteRepository implements IAuthRepository {
   AuthRemoteRepository(this._authRemoteDataSource);
 
   @override
-  Future<Either<Failure, bool>> loginUser(String contact, String password) {
-    throw UnimplementedError();
+  Future<Either<Failure, UserEntity>> loginUser(String contact, String password) {
+    return _authRemoteDataSource.loginUser(contact, password);
   }
 
   @override

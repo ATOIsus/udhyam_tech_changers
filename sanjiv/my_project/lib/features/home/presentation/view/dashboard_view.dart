@@ -7,7 +7,7 @@ import 'dashboard/home_view.dart';
 import 'dashboard/profile_view.dart';
 import 'dashboard/routine_view.dart';
 
-final selectedIndexProvider = StateProvider<int>((ref) => 2);
+final selectedIndexProvider = StateProvider<int>((ref) => 1);
 
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
@@ -22,7 +22,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   }
 
   final List<Widget> _screens = [
-    RoutineView(),
+    const RoutineView(),
     const HomeView(),
     const ProfileView(),
   ];

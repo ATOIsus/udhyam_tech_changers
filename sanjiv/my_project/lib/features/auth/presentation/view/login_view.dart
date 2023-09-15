@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../config/router/app_routes.dart';
 import '../../../../core/common/custom_textformfield.dart';
+import '../viewmodel/auth_viewmodel.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -17,19 +18,30 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final _contactController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _contactController = TextEditingController(text: '1234567890');
+  final _passwordController = TextEditingController(text: 'sanjiv123');
 
   bool _hidePassword = true;
 
   IconData _hideIcon = Icons.remove_red_eye;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Dio dio = Dio();
+  //   print('message from server');
+  //   print(dio.get('http://10.0.2.2:3000/'));
+  // }
 
   void _submitLogin() {
     final contact = _contactController.text.trim();
     final password = _passwordController.text.trim();
 
     print('Contact : $contact Password : $password');
-    // ref.read(authViewModelProvider.notifier).login(_user);
+
+    ref
+        .watch(authViewModelProvider.notifier)
+        .loginUser(context, contact, password);
   }
 
   @override
@@ -108,7 +120,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         _submitLogin();
                       }
                     },
-                    child: const Text('Register'),
+                    child: const Text('Login'),
                   ),
                   _gap,
                   TextButton(
