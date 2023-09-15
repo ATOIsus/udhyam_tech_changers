@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 //For /api/user/signup
 const signUpUser = (req, res, next) => {
-  const { contactNumber, password, location, userPhoto } = req.body;
+  const { contactNumber, password, address, fullName, userPhoto } = req.body;
 
   User.findOne({ contactNumber: req.body.contactNumber })
     .then((user) => {
@@ -17,7 +17,8 @@ const signUpUser = (req, res, next) => {
         User.create({
           contactNumber,
           password: hash,
-          location,
+          address,
+          fullName,
           role: "user",
           userPhoto,
         })
@@ -51,7 +52,7 @@ const signInUser = (req, res, next) => {
           (err, token) => {
             if (err)
               return res.status(500).json({ error: "Error with payload!" });
-            res.json({ status: "Logged In", token: token, role: user.role });
+            res.json({ status: "Logged In", token: token, user: user });
           }
         );
       });
@@ -73,6 +74,9 @@ const getInfo = (req, res, next) => {
 
 //For /api/user/requestWater
 const requestWater = (req, res, next) => {
+
+    console.log(req.user)
+
   User.findById(req.user.id)
     .then((user) => {
       if (!user) return res.status(404).json({ error: "User not found." });

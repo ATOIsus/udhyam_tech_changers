@@ -31,22 +31,13 @@ const getRequests = (req, res, next) => {
 
       separateLst.forEach((lst) => {
         filteredList.push({
-          user: lst.user,
+          contactNumber: lst.contactNumber,
           price: lst.price,
           accept: lst.accept,
         });
       });
 
-      filteredList.forEach((indUser) => {
-        User.findById(indUser.user).then((result) => {
-            finalList.push({
-               contactNumber: result.contactNumber,
-               price: indUser.price
-            })
-        });
-      });
-
-      console.log(finalList)
+      console.log(filteredList);
 
       //res.json({ data: separateLst });
     })
