@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:show_jal/timetabledata.dart';
 
+import 'timetabledata.dart';
 
 
 class TimeTable extends StatefulWidget {
@@ -12,6 +12,42 @@ class TimeTable extends StatefulWidget {
 
 class _TimeTableState extends State<TimeTable> {
   Data data = Data();
+  String userLocation = "thamel";
+
+  var userTimeTable = <WaterSupplyTime>[];
+  var wholeTime = <WaterSupplyTime>[];
+  var tripureshwor = <WaterSupplyTime>[];
+  var kritipur = <WaterSupplyTime>[];
+
+  final TextEditingController? controller = TextEditingController();
+
+  bool _islooged = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    //user location supply time
+    data.Watersupplytime.forEach((element) {
+      if (element.location.contains(userLocation)) {
+        userTimeTable.add(element);
+      }
+    });
+
+    //tripureshwor supply time
+    data.Watersupplytime.forEach((element) {
+      if (element.source == "tripureshwor") {
+        tripureshwor.add(element);
+      }
+    });
+
+    //kritipur supply time
+    data.Watersupplytime.forEach((element) {
+      if (element.source == "kritipur") {
+        kritipur.add(element);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +57,16 @@ class _TimeTableState extends State<TimeTable> {
         Padding(
           padding: EdgeInsets.all(10),
           child: SearchBar(
-            padding: const MaterialStatePropertyAll<EdgeInsets>(
+            controller: controller,
+            padding: MaterialStatePropertyAll<EdgeInsets>(
                 EdgeInsets.symmetric(horizontal: 16.0)),
-            leading: const Icon(Icons.search),
+            leading: Icon(Icons.search),
+            hintText: '  Search...',
+            hintStyle:
+                MaterialStateProperty.all(const TextStyle(color: Colors.grey)),
+            onChanged: (String value) {
+              print('value: $value');
+            },
           ),
         ),
         Expanded(
@@ -31,12 +74,94 @@ class _TimeTableState extends State<TimeTable> {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
+                _islooged
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              "Your location",
+                              style: TextStyle(
+                                fontSize: 21,
+                              ),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              "thamel",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: DataTable(
+                                columns: const <DataColumn>[
+                                  DataColumn(
+                                    label: Expanded(
+                                      child: Text(
+                                        'Day',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Expanded(
+                                      child: Text(
+                                        'Time',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Expanded(
+                                      child: Text(
+                                        'Location',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                rows: userTimeTable
+                                    .map(
+                                      (name) => DataRow(
+                                        cells: [
+                                          DataCell(
+                                            Text(name.day),
+                                            showEditIcon: false,
+                                            placeholder: false,
+                                          ),
+                                          DataCell(
+                                            Text(name.time),
+                                            showEditIcon: false,
+                                            placeholder: false,
+                                          ),
+                                          DataCell(
+                                            Text(name.location),
+                                            showEditIcon: false,
+                                            placeholder: false,
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                    .toList()),
+                          )
+                        ],
+                      )
+                    : Container(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(20),
-                      child: const Text(
+                      child: Text(
                         "Tripureshwor",
                         style: TextStyle(
                           fontSize: 21,
@@ -72,28 +197,26 @@ class _TimeTableState extends State<TimeTable> {
                               ),
                             ),
                           ],
-                          rows: data.tripureshwor
-                              .map(
-                                (name) => DataRow(
-                                  cells: [
-                                    DataCell(
-                                      Text(name.day),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                      Text(name.time),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                      Text(name.location),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    )
-                                  ],
-                                ),
-                              )
+                          rows: tripureshwor
+                              .map((name) => DataRow(
+                                    cells: [
+                                      DataCell(
+                                        Text(name.day),
+                                        showEditIcon: false,
+                                        placeholder: false,
+                                      ),
+                                      DataCell(
+                                        Text(name.time),
+                                        showEditIcon: false,
+                                        placeholder: false,
+                                      ),
+                                      DataCell(
+                                        Text(name.location),
+                                        showEditIcon: false,
+                                        placeholder: false,
+                                      )
+                                    ],
+                                  ))
                               .toList()),
                     )
                   ],
@@ -101,9 +224,9 @@ class _TimeTableState extends State<TimeTable> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(20),
-                      child: const Text(
+                      child: Text(
                         "Kritipur",
                         style: TextStyle(
                           fontSize: 21,
@@ -139,7 +262,7 @@ class _TimeTableState extends State<TimeTable> {
                               ),
                             ),
                           ],
-                          rows: data.tripureshwor
+                          rows: kritipur
                               .map(
                                 (name) => DataRow(
                                   cells: [
@@ -172,33 +295,4 @@ class _TimeTableState extends State<TimeTable> {
       ])),
     );
   }
-}
-
-
-class CustomSearchDelegate extends SearchDelegate{
-  Data data = Data();
-
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-  
-  }
-
-  @override
-  Widget? buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
-    throw UnimplementedError();
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    throw UnimplementedError();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
-    throw UnimplementedError();
-  }
-
 }
