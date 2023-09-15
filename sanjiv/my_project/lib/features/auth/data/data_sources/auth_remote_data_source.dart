@@ -18,13 +18,13 @@ class AuthRemoteDataSource {
 
   AuthRemoteDataSource(this._dio);
 
-  // user login
+  // user register
 
   Future<Either<Failure, bool>> registerUser(UserEntity userEntity) async {
     try {
       Response res = await _dio.post(ApiEndpoints.register, data: {
         "fullName": userEntity.fullName,
-        "contact": userEntity.contactNumber,
+        "contactNumber": userEntity.contactNumber,
         "address": userEntity.address,
         "password": userEntity.password,
       });
@@ -47,7 +47,32 @@ class AuthRemoteDataSource {
     }
   }
 
-  // user register
+  // user login
+
+  Future<Either<Failure, bool>> loginUser(
+      String contactNumber, String password) async {
+    try {
+      Response res = await _dio.post(ApiEndpoints.login, data: {
+        "contactNumber": contactNumber,
+        "password": password,
+      });
+      if (res.statusCode == 200) {
+        print('User token : ${res.data['token']}');
+        return const Right(true);
+      }
+      // throw error if failed in login
+      return Left(
+        Failure(
+          error: res.data['error'],
+          statusCode: res.statusCode.toString(),
+        ),
+      );
+    } on DioException catch (e) {
+      return Left(Failure(
+          error: e.error.toString(),
+          statusCode: e.response?.statusCode.toString() ?? '0'));
+    }
+  }
 
   // shared pres
 }

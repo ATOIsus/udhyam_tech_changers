@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../config/router/app_routes.dart';
 import '../../../../core/common/snackbar_message.dart';
 import '../../../../core/failure/failure.dart';
 import '../../domain/entity/user_entity.dart';
@@ -27,6 +28,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
 
     data.fold((failed) {
       state = state.copyWith(isLoading: false, error: failed.error);
+      print('Failed to login');
       showSnackbarMsg(
         context: context,
         targetMessage: failed.error,
@@ -35,6 +37,29 @@ class AuthViewModel extends StateNotifier<AuthState> {
       );
     }, (success) {
       state = state.copyWith(isLoading: false, error: null);
+      Navigator.pushNamed(context, AppRoutes.loginRoute);
+    });
+  }
+
+  // for login user
+
+  Future<void> loginUser(
+      BuildContext context, String contact, String password) async {
+    state = state.copyWith(isLoading: true);
+    Either<Failure, bool> data =
+        await _authUseCase.loginUser(contact, password);
+
+    data.fold((failed) {
+      state = state.copyWith(isLoading: false, error: failed.error);
+      showSnackbarMsg(
+        context: context,
+        targetMessage: failed.error,
+        targetTitle: 'Error',
+        type: ContentType.failure,
+      );
+    }, (success) {
+      state = state.copyWith(isLoading: false, error: null);
+      Navigator.pushNamed(context, AppRoutes.dashboardRoute);
     });
   }
 }

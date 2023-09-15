@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_project/features/auth/domain/entity/user_entity.dart';
 
 import '../../../../config/router/app_routes.dart';
 import '../../../../core/common/custom_textformfield.dart';
+import '../viewmodel/auth_viewmodel.dart';
 
-class RegisterView extends StatefulWidget {
+class RegisterView extends ConsumerStatefulWidget {
   const RegisterView({super.key});
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RegisterViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _RegisterViewState extends ConsumerState<RegisterView> {
   final _gap = const SizedBox(height: 30);
 
   final _formKey = GlobalKey<FormState>();
@@ -64,16 +66,17 @@ class _RegisterViewState extends State<RegisterView> {
     }
   }
 
-  void _submitRegister() {
+  void _submitRegister(BuildContext context, WidgetRef ref) {
     UserEntity newUser = UserEntity(
       fullName: _fullNameController.text.trim(),
       contactNumber: _contactController.text.trim(),
       address: _addressController.text.trim(),
       password: _passwordController.text.trim(),
     );
-    
 
     print('New user details : $newUser');
+
+    ref.watch(authViewModelProvider.notifier).registerUser(newUser, context);
   }
 
   @override
@@ -154,7 +157,7 @@ class _RegisterViewState extends State<RegisterView> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         print('Register');
-                        _submitRegister();
+                        _submitRegister(context, ref);
                       }
                     },
                     child: const Text('Login'),

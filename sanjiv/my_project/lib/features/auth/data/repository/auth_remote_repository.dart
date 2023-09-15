@@ -19,7 +19,7 @@ class AuthRemoteRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, bool>> loginUser(String contact, String password) {
-    throw UnimplementedError();
+    return _authRemoteDataSource.loginUser(contact, password);
   }
 
   @override
