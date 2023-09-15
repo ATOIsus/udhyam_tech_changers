@@ -1,23 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../config/router/app_routes.dart';
+import '../viewmodel/splash_viewmodel.dart';
 
-class SplashView extends StatefulWidget {
+class SplashView extends ConsumerStatefulWidget {
   const SplashView({super.key});
 
   @override
-  State<SplashView> createState() => _SplashViewState();
+  ConsumerState<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _SplashViewState extends ConsumerState<SplashView> {
   @override
   void initState() {
     super.initState();
 
     Timer(const Duration(seconds: 3), () {
-      Navigator.popAndPushNamed(context, AppRoutes.loginRoute);
+      ref.read(splashViewModelProvider.notifier).init(context: context);
+
+      // Navigator.popAndPushNamed(context, AppRoutes.loginRoute);
     });
   }
 
