@@ -2,8 +2,8 @@ require('dotenv').config()
 const portRoute = process.env.PORT
 
 //Importing routes.
-// const user_routes = require('./routes/user-routes')
-// const supplier_routes = require('./routes/supplier-routes')
+const user_routes = require('./routes/user-routes')
+const supplier_routes = require('./routes/supplier-routes')
 
 //const { verifyUser, verifySupplier } = require('../middlewares/authentication-middleware')
 
@@ -26,8 +26,8 @@ app.listen(portRoute, () =>{
  })
 
 //Using routes from another file
-// app.use('/api/user', user_routes)
-// app.use('/api/supplier', supplier_routes)
+app.use('/api/user', user_routes)
+app.use('/api/supplier', supplier_routes)
 
 //Unknown Path.
 app.use((req, res) => {
