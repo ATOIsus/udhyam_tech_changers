@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:show_jal/timetabledata.dart';
 
-
-class TimeTable extends StatefulWidget {
-  const TimeTable({super.key});
-
+class LogedTimeTable extends StatefulWidget {
   @override
-  State<TimeTable> createState() => _TimeTableState();
+  State<LogedTimeTable> createState() => _LogedTimeTableState();
 }
 
-class _TimeTableState extends State<TimeTable> {
+class _LogedTimeTableState extends State<LogedTimeTable> {
   Data data = Data();
+  String userLocation = "thamel";
+
+  var userTimeTable = <WaterSupplyTime>[];
+
+  void initState() {
+    super.initState();
+    data.tripureshwor.forEach((element) {
+      if (element.location.contains(userLocation)) {
+        userTimeTable.add(element);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +35,73 @@ class _TimeTableState extends State<TimeTable> {
                 const Padding(
                   padding: EdgeInsets.all(20),
                   child: Text(
+                    "Your location",
+                    style: TextStyle(
+                      fontSize: 21,
+                    ),
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                      columns: <DataColumn>[
+                        DataColumn(
+                          label: Expanded(
+                            child: Text(
+                              'Day',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                            child: Text(
+                              'Time',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                            child: Text(
+                              'Location',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                      rows: userTimeTable
+                          .map(
+                            (name) => DataRow(
+                              cells: [
+                                DataCell(
+                                  Text(name.day),
+                                  showEditIcon: false,
+                                  placeholder: false,
+                                ),
+                                DataCell(
+                                  Text(name.time),
+                                  showEditIcon: false,
+                                  placeholder: false,
+                                ),
+                                DataCell(
+                                  Text(name.location),
+                                  showEditIcon: false,
+                                  placeholder: false,
+                                )
+                              ],
+                            ),
+                          )
+                          .toList()),
+                )
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
                     "Tripureshwor",
                     style: TextStyle(
                       fontSize: 21,
@@ -35,7 +111,7 @@ class _TimeTableState extends State<TimeTable> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
-                      columns: const <DataColumn>[
+                      columns: <DataColumn>[
                         DataColumn(
                           label: Expanded(
                             child: Text(
@@ -90,9 +166,9 @@ class _TimeTableState extends State<TimeTable> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(20),
-                  child: Text(
+                  child: const Text(
                     "Kritipur",
                     style: TextStyle(
                       fontSize: 21,
@@ -102,7 +178,7 @@ class _TimeTableState extends State<TimeTable> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
-                      columns: const <DataColumn>[
+                      columns: <DataColumn>[
                         DataColumn(
                           label: Expanded(
                             child: Text(
@@ -158,5 +234,6 @@ class _TimeTableState extends State<TimeTable> {
         ),
       )),
     );
+    
   }
 }
