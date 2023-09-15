@@ -41,6 +41,7 @@ const signInUser = (req, res, next) => {
           return res.status(400).json({ error: "Incorrect password!" });
         const payload = {
           id: user.id,
+          contactNumber: user.contactNumber,
           role: user.role,
         };
         jwt.sign(
@@ -78,6 +79,7 @@ const requestWater = (req, res, next) => {
       const request = {
         user: req.user.id,
         price: req.body.price,
+        contactNumber: req.user.contactNumber
       };
       user.waterRequest.push(request);
       user

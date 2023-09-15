@@ -10,7 +10,10 @@ const getRequests = (req, res, next) => {
 
       lstRequest = [];
       nonEmptyList = [];
+      separateLst = [];
       userRequestList = [];
+      filteredList = [];
+      finalList = [];
 
       user.forEach((singleUser) => lstRequest.push(singleUser.waterRequest));
 
@@ -21,23 +24,31 @@ const getRequests = (req, res, next) => {
       });
 
       nonEmptyList.forEach((lst) => {
-        User.findOne({ _id: lst.user }).then( (user) =>{
-            userRequestList.push(
-                {
-                    contactNumber : user.contactNumber,
-                    price : lst.price
-
-                }
-            )
-        }
-         
-
-        )
+        lst.forEach((individualLst) => {
+          separateLst.push(individualLst);
+        });
       });
 
-      console.log(nonEmptyList);
+      separateLst.forEach((lst) => {
+        filteredList.push({
+          user: lst.user,
+          price: lst.price,
+          accept: lst.accept,
+        });
+      });
 
-      res.json({ data: request });
+      filteredList.forEach((indUser) => {
+        User.findById(indUser.user).then((result) => {
+            finalList.push({
+               contactNumber: result.contactNumber,
+               price: indUser.price
+            })
+        });
+      });
+
+      console.log(finalList)
+
+      //res.json({ data: separateLst });
     })
     .catch(next);
 };

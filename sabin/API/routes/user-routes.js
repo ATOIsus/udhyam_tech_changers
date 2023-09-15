@@ -1,27 +1,18 @@
 const express = require("express");
 const router = express.Router();
-
+const { verifyUser } = require('../middlewares/authentication')
 const userController = require("../controllers/user-controller");
 
+//Add new user.
+router.route("/signup").post(userController.signUpUser);
 
-router
-  .route("/signup")
-  //Add new user.
-  .post(userController.signUpUser);
+//User login.
+router.route("/signin").post(userController.signInUser);
 
-router
-  .route("/signin")
-  // User login.
-  .post(userController.signInUser);
+//Get information of specific user.
+router.route("/info").get(verifyUser,userController.getInfo);
 
-router
-  .route("/info")
-  //Get information of specific user.
-  .get(userController.getSingleUser);
-
-router
-  .route("/requestwater")
-  //Request water.
-  .post(userController.requestWater);
+//Request water.
+router.route("/requestwater").post(verifyUser,userController.requestWater);
 
 module.exports = router;

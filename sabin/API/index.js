@@ -5,8 +5,6 @@ const portRoute = process.env.PORT
 const user_routes = require('./routes/user-routes')
 const supplier_routes = require('./routes/supplier-routes')
 
-//const { verifyUser, verifySupplier } = require('../middlewares/authentication-middleware')
-
 //Creating an object.
 const mongoose = require("mongoose")
 
@@ -20,6 +18,10 @@ const express = require('express')
 
 //Creating an object.
 const app = express()
+
+// For request to take JSON files.
+app.use(express.json())
+
 
 app.listen(portRoute, () =>{
     console.log(`Server is running in ${portRoute}`)  

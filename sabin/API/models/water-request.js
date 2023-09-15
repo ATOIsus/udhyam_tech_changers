@@ -10,13 +10,17 @@ const requestSchema = new mongoose.Schema({
     ref: "User",
   },
 
+  contactNumber: {
+    type: String,
+  },
+
   price: {
     type: String,
   },
 
   accept: {
     type: Boolean,
-    required: true,
+    default: false,
   },
 });
 
@@ -29,5 +33,5 @@ requestSchema.set("toJSON", {
   },
 });
 
-//Exporting the mongoose model.
+//Exporting the mongoose schema.
 module.exports = requestSchema;
