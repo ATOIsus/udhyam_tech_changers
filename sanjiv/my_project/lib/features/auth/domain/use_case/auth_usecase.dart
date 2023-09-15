@@ -21,7 +21,7 @@ class AuthUseCase {
   }
 
 // for user login
-  Future<Either<Failure, bool>> loginUser(String contact, String password) {
+  Future<Either<Failure, UserEntity>> loginUser(String contact, String password) {
     return _authRepository.loginUser(contact, password);
   }
 }

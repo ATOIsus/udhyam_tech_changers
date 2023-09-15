@@ -46,7 +46,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
   Future<void> loginUser(
       BuildContext context, String contact, String password) async {
     state = state.copyWith(isLoading: true);
-    Either<Failure, bool> data =
+    Either<Failure, UserEntity> data =
         await _authUseCase.loginUser(contact, password);
 
     data.fold((failed) {
@@ -57,8 +57,14 @@ class AuthViewModel extends StateNotifier<AuthState> {
         targetTitle: 'Error',
         type: ContentType.failure,
       );
-    }, (success) {
-      state = state.copyWith(isLoading: false, error: null);
+    }, (fetchedUserData) {
+      print('User data details from login view model: $fetchedUserData');
+      state = state.copyWith(
+        isLoading: false,
+        error: null,
+        imageName: fetchedUserData.userPhoto,
+        singleUser: fetchedUserData,
+      );
       Navigator.pushNamed(context, AppRoutes.dashboardRoute);
     });
   }

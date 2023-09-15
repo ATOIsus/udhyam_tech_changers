@@ -23,5 +23,5 @@ class ApiEndpoints {
 
   // ----------------- Upload Image Routes = 4  -----------------
   static const String uploadImage = "upload";
-  static const String imageUrl = "$baseUrl upload/";
+  static const String imageUrl = "http://10.0.2.2:3000/uploads/";
 }
