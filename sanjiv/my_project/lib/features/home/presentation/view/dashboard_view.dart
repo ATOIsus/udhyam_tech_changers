@@ -59,7 +59,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
           index: ref.watch(selectedIndexProvider),
           onTap: _onTapItem,
           // container background color
-          color: Colors.yellow,
+          color: Colors.blue,
 
           buttonBackgroundColor: Colors.blue,
 
