@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_project/features/home/presentation/viewmodel/routine_viewmodel.dart';
 
 import '../../../domain/entity/data.dart';
 
-class RoutineView extends StatefulWidget {
+class RoutineView extends ConsumerStatefulWidget {
   const RoutineView({super.key});
 
   @override
-  State<RoutineView> createState() => _RoutineViewState();
+  ConsumerState<RoutineView> createState() => _RoutineViewState();
 }
 
-class _RoutineViewState extends State<RoutineView> {
+class _RoutineViewState extends ConsumerState<RoutineView> {
   Data data = Data();
 
   @override
   Widget build(BuildContext context) {
+    var routineList = ref.watch(routineViewModelProvider);
+    print('Length of routine list: ${routineList.routine.length}');
     return SafeArea(
       child: Scaffold(
           body: Column(children: [

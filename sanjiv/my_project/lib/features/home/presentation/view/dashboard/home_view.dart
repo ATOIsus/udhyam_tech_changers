@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_project/config/router/app_routes.dart';
 import 'package:my_project/core/shared_prefs/user_shared_prefs.dart';
-import 'package:my_project/features/auth/domain/entity/user_entity.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -21,15 +20,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
     print('Reading token from home : $token');
   }
 
- 
-
   @override
   void initState() {
     super.initState();
 
     _showUserToken();
-
-  
   }
 
   @override
