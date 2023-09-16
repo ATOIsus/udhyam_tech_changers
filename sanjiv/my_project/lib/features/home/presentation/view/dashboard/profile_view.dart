@@ -108,7 +108,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
   void initState() {
     super.initState();
 
-    _getUserData();
+    // _getUserData();
   }
 
   @override
