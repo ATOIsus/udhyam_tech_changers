@@ -4,7 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_project/config/router/app_routes.dart';
 import 'package:my_project/core/shared_prefs/user_shared_prefs.dart';
-import 'package:uuid/uuid.dart';
+import 'package:timezone/timezone.dart';
 
 import '../../../../../core/common/snackbar_message.dart';
 import '../../../../../core/utils/download_file.dart';
@@ -61,6 +61,50 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   final _gap = const SizedBox(height: 20);
 
+  void _showScheduleNotifications() async {
+    print('Schedule Notifications');
+    // Note: Before making notifications, its details need to be defined for both ios and android
+    AndroidNotificationDetails androidNotificationDetails =
+        const AndroidNotificationDetails(
+      'channelId', // channel id can be anything
+      'channelName', // channel name can be anything,
+      priority: Priority.max,
+      importance: Importance.max,
+      enableLights: true,
+      enableVibration: true,
+    );
+
+    DarwinNotificationDetails iosNotificationDetail =
+        const DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentBanner: true,
+      presentSound: true,
+    );
+
+    NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+      iOS: iosNotificationDetail,
+    );
+
+    // current time + 4 seconds
+    DateTime scheduleTIme = DateTime.now().add(const Duration(seconds: 4));
+
+    // show schedule notifications
+    await notificationsPlugin.zonedSchedule(
+      1, // id
+      'Schedule Notification title', // title
+      'This is schedule sample notification', // body
+      TZDateTime.from(scheduleTIme, local), // scheduledate
+      notificationDetails,
+
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+
+      androidAllowWhileIdle: true,
+    );
+  }
+
   void _showSimpleNotifications() async {
     // image for right image icon on the notification
     final largeIconPath = await DownloadFile.downloadFiles(
@@ -77,12 +121,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     print('Simple Notification got clicked');
 
-    String channelId = const Uuid().v4();
+    // String channelId = const Uuid().v4();
     // Note: Before making notifications, its details need to be defined for both ios and android
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-      channelId,
-      channelId + user!.fullName, // channel name can be anything,
+      'wer',
+      'asdf', // channel name can be anything,
       priority: Priority.max,
       importance: Importance.max,
       enableLights: true,
@@ -93,7 +137,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
           FilePathAndroidBitmap(bigPicturePath),
           contentTitle: '<b>Attachement Image</b>',
           htmlFormatContentTitle: true,
-          summaryText: '<i>Did you forget to take medicine ?</i>',
+          summaryText: '<i>Did you forget to take water from tap ?</i>',
           htmlFormatSummaryText: true,
           largeIcon: FilePathAndroidBitmap(largeIconPath)),
     );
@@ -113,13 +157,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     // show the notification
     await notificationsPlugin.show(
-        123, // Note thid id must be dynamic, but for demo static int is used
-        'New Notification', // title
-        'Take Medicine', // body
-        notificationDetails,
-
-        // Note: add payload
-        payload: 'payload data Sanjiv Shrestha');
+      12333,
+      'New Notification',
+      'Paani aayo',
+      notificationDetails,
+      // payload: 'payload data Sanjiv Shrestha',
+    );
   }
 
   @override
@@ -133,7 +176,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                // _showScheduleNotifications();
+                _showSimpleNotifications();
+              },
               icon: const Icon(Icons.notifications_active),
             ),
             _gap,

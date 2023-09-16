@@ -13,10 +13,10 @@ class ApiEndpoints {
   static const String register = "user/signup";
   static const String login = "user/signin";
   static const String userInfo = "user/info";
-  static const String requestWater = "user/requestwater";
+  static const String requestWater = "user/requestwater";  // POST
 
   //  -------------- Supplier Routes = 2 -----------------
-  static const String dashboard = 'supplier/dashboard';
+  static const String supplierDashboard = 'supplier/dashboard';
 
   //  -------------- Routine Routes = 3 -----------------
   static const String routine = 'routine';

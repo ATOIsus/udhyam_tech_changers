@@ -37,10 +37,14 @@ class RoutineRemoteDataSource {
         GetAllRoutineDTO getAllRoutineDTO = GetAllRoutineDTO.fromJson(res.data);
 
         return Right(_routineApiModel.toEntityList(getAllRoutineDTO.data));
-      } else {
-        return Left(Failure(
-            error: res.statusMessage ?? 'Something went wrong',
-            statusCode: res.statusCode.toString()));
+      } 
+      else {
+        return Left(
+          Failure(
+            error: res.data['error'],
+            statusCode: res.statusCode.toString(),
+          ),
+        );
       }
     } on DioException catch (e) {
       return Left(

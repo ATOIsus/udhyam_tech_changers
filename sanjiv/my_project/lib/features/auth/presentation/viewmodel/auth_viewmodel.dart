@@ -65,7 +65,12 @@ class AuthViewModel extends StateNotifier<AuthState> {
         imageName: fetchedUserData.userPhoto,
         singleUser: fetchedUserData,
       );
-      Navigator.pushNamed(context, AppRoutes.dashboardRoute);
+
+      if (fetchedUserData.role!.toLowerCase() == 'user') {
+        Navigator.pushNamed(context, AppRoutes.dashboardRoute);
+      } else {
+        Navigator.pushNamed(context, AppRoutes.supplierRoute);
+      }
     });
   }
 }
