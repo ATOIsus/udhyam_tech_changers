@@ -25,6 +25,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   late GoogleMapController mapController;
   late Set<Marker> markers;
   late LatLng myLocation;
+  late LatLng secondSourceLocation;
 
   late UserEntity? user;
 
@@ -36,18 +37,31 @@ class _HomeViewState extends ConsumerState<HomeView> {
     user = AuthState.userEntity;
 
     markers = {};
-    myLocation = const LatLng(27.7172, 85.3240);
-    markers.add(
-      Marker(
-        markerId: const MarkerId('myLocation'),
-        position: myLocation,
-        infoWindow: const InfoWindow(
-          title: 'Goapl Dai ko chatamari',
-          snippet: 'Chatamari',
-        ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    myLocation = const LatLng(27.6837614, 85.2907682);
+    secondSourceLocation = const LatLng(27.6837624, 85.2471975);
+
+    var source1 = Marker(
+      markerId: const MarkerId('myLocation'),
+      position: myLocation,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+      infoWindow: const InfoWindow(
+        title: 'Pani Tanki (13103m altitude)',
+        snippet: 'Drinking Water Source',
       ),
     );
+    var source2 = Marker(
+      markerId: const MarkerId('secondSourceLocation'),
+      position: secondSourceLocation,
+      infoWindow: const InfoWindow(
+        title: 'Water Tank (12007m altitude)',
+        snippet: 'Drinking Water Source',
+      ),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    );
+
+    // add sources
+    markers.add(source1);
+    markers.add(source2);
 
     requestPermission();
 
