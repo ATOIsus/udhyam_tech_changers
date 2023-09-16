@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_project/features/home/presentation/viewmodel/supplier_viewmodel.dart';
 
 import '../../../../config/router/app_routes.dart';
+import '../viewmodel/supplier_viewmodel.dart';
 
 class SupplierDashboardView extends ConsumerStatefulWidget {
   const SupplierDashboardView({super.key});
@@ -18,6 +18,7 @@ class _SupplierDashboardViewState extends ConsumerState<SupplierDashboardView> {
   @override
   Widget build(BuildContext context) {
     var supplierSate = ref.watch(supplierViewModelProvider);
+    var suppliers = supplierSate.supplierList;
     print('Length of supplier list is : ${supplierSate.supplierList.length}');
 
     return SafeArea(
@@ -41,14 +42,6 @@ class _SupplierDashboardViewState extends ConsumerState<SupplierDashboardView> {
                   DataColumn(
                     label: Expanded(
                       child: Text(
-                        'Status',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Expanded(
-                      child: Text(
                         'Contact',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -57,7 +50,15 @@ class _SupplierDashboardViewState extends ConsumerState<SupplierDashboardView> {
                   DataColumn(
                     label: Expanded(
                       child: Text(
-                        'Location',
+                        'Price',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Status',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -71,21 +72,21 @@ class _SupplierDashboardViewState extends ConsumerState<SupplierDashboardView> {
                     ),
                   ),
                 ],
-                rows: order.orders
+                rows: suppliers
                     .map(
                       (e) => DataRow(cells: [
                         DataCell(
-                          StatusCell(status: e.status),
+                          StatusCell(status: e.contactNumber),
                           showEditIcon: false,
                           placeholder: false,
                         ),
                         DataCell(
-                          Text(e.Location),
+                          StatusCell(status: e.price),
                           showEditIcon: false,
                           placeholder: false,
                         ),
                         DataCell(
-                          Text(e.contact),
+                          Text(e.status),
                           showEditIcon: false,
                           placeholder: false,
                         ),
