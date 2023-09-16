@@ -3,6 +3,9 @@
         android:label="showजल"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+          
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyALMIe4uG-bkmW4N-Ij9-ymgoPsuzq9WcU"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
