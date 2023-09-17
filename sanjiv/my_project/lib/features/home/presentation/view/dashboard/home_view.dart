@@ -27,6 +27,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
   late LatLng myLocation;
   late LatLng secondSourceLocation;
 
+  late List<LatLng> housePositions;
+
   late UserEntity? user;
 
   final UserSharedPrefs _userSharedPrefs = UserSharedPrefs();
@@ -39,6 +41,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
     markers = {};
     myLocation = const LatLng(27.6837614, 85.2907682);
     secondSourceLocation = const LatLng(27.6837624, 85.2471975);
+
+    housePositions = [
+      const LatLng(27.6837614, 85.2907682),
+      const LatLng(27.6531614, 85.2437182),
+      const LatLng(27.6033618, 85.2917641),
+    ];
 
     var source1 = Marker(
       markerId: const MarkerId('myLocation'),
@@ -58,6 +66,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
       ),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
+
+    List<Marker> houseSources = [];
 
     // add sources
     markers.add(source1);
@@ -116,7 +126,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         automaticallyImplyLeading: false,
         title: Text(
           'Hi, ${user!.fullName.split(' ')[0]}!',
-          style: const TextStyle(fontSize: 30, fontStyle: FontStyle.italic),
+          style: const TextStyle(fontSize: 24),
         ),
         actions: [
           IconButton(

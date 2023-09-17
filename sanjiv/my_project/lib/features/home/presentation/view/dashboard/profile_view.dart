@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../../../config/constants/api_endpoints.dart';
 import '../../../../auth/domain/entity/user_entity.dart';
 import '../../../../auth/presentation/state/auth_state.dart';
 
@@ -98,6 +97,9 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
   Widget build(BuildContext context) {
     // UserEntity? user = ref.watch(authViewModelProvider).singleUser;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -115,10 +117,10 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                         radius: 100,
                         backgroundImage: _img != null
                             ? FileImage(_img!)
-                            : NetworkImage(
-                                // 'https://img.freepik.com/free-psd/3d-icon-social-media-app_23-2150049569.jpg?w=740&t=st=1694796086~exp=1694796686~hmac=97f185f13daf2fb34ff9271c4e52ea2e197129c57da43b568a2f1d102480ad8a',
+                            : const NetworkImage(
+                                'https://img.freepik.com/free-psd/3d-icon-social-media-app_23-2150049569.jpg?w=740&t=st=1694796086~exp=1694796686~hmac=97f185f13daf2fb34ff9271c4e52ea2e197129c57da43b568a2f1d102480ad8a',
                                 // ApiEndpoints.imageUrl + user!.userPhoto!,
-                                '${ApiEndpoints.imageUrl}${_user.userPhoto!}',
+                                // '${ApiEndpoints.imageUrl}${_user.userPhoto!}',
                               ) as ImageProvider,
                       ),
                       Positioned(

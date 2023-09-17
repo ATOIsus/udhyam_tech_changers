@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_project/features/auth/presentation/state/auth_state.dart';
 
-import '../../../domain/entity/data.dart';
 import '../../../domain/entity/routine_entity.dart';
 import '../../viewmodel/routine_viewmodel.dart';
 
@@ -13,8 +13,7 @@ class RoutineView extends ConsumerStatefulWidget {
 }
 
 class _RoutineViewState extends ConsumerState<RoutineView> {
-  Data data = Data();
-
+  // List<RoutineEntity> _filteredRoutineList = [];
   List<RoutineEntity> _filteredRoutineList = [];
   bool _isInitializeSearching = false;
 
@@ -23,6 +22,12 @@ class _RoutineViewState extends ConsumerState<RoutineView> {
   @override
   void initState() {
     super.initState();
+
+    // if (_isInitializeSearching == false) {
+    //   setState(() {
+    //     _filteredRoutineList = ref.read(routineViewModelProvider).routine;
+    //   });
+    // }
 
     _searchController.addListener(_onSearchingRoutine);
   }
@@ -35,36 +40,37 @@ class _RoutineViewState extends ConsumerState<RoutineView> {
         _filteredRoutineList = ref.read(routineViewModelProvider).routine;
       });
     } else {
-      _isInitializeSearching = true;
-
       setState(() {
+        _isInitializeSearching = true;
+
         _filteredRoutineList = ref
             .read(routineViewModelProvider)
             .routine
             .where((routine) =>
                 routine.day.toLowerCase().contains(query) ||
-                routine.location.toLowerCase().contains(query))
+                routine.location.toLowerCase().contains(query) ||
+                routine.startTime.contains(query) ||
+                routine.endTime.contains(query))
             .toList();
       });
     }
   }
 
-  // Map<String, int>? _sources ;
-
-  // void _getTotalSources(List<RoutineEntity> routineList) {
-  //   for (RoutineEntity routine in routineList) {
-  //     print(routine.source);
-
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     var routineList = ref.watch(routineViewModelProvider);
-    List<RoutineEntity> actualRoutineList = routineList.routine;
-    print('Length of routine list: ${routineList.routine.length}');
 
-    // _getTotalSources(routineList.routine);
+    if (_isInitializeSearching == false) {
+      _filteredRoutineList = routineList.routine;
+    }
+
+    print('User addres is : ${AuthState.userEntity!.address}');
+    List<RoutineEntity> userRoutine = _filteredRoutineList
+        .where((singleRoutine) => singleRoutine.location
+            .toLowerCase()
+            .contains(AuthState.userEntity!.address.toLowerCase()))
+        .toList();
+
     return SafeArea(
       child: Scaffold(
           body: Column(children: [
@@ -72,7 +78,9 @@ class _RoutineViewState extends ConsumerState<RoutineView> {
           padding: const EdgeInsets.all(10),
           child: SearchBar(
             controller: _searchController,
-            hintText: 'Search by day or location',
+            hintText: 'Search by day, time or location',
+            hintStyle:
+                MaterialStateProperty.all(const TextStyle(color: Colors.grey)),
             padding: const MaterialStatePropertyAll<EdgeInsets>(
                 EdgeInsets.symmetric(horizontal: 16.0)),
             leading: const Icon(Icons.search),
@@ -106,10 +114,76 @@ class _RoutineViewState extends ConsumerState<RoutineView> {
                       ),
                     ),
                   )
-                } else if (routineList.routine != []) ...{
+                } else if (_filteredRoutineList != []) ...{
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          "My Routine",
+                          style: TextStyle(
+                            fontSize: 21,
+                          ),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                            columns: const <DataColumn>[
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Day',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Time',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Location',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ],
+                            rows: userRoutine
+                                .map(
+                                  (singleRoutine) => DataRow(
+                                    cells: [
+                                      DataCell(
+                                        Text(singleRoutine.day),
+                                        showEditIcon: false,
+                                        placeholder: false,
+                                      ),
+                                      DataCell(
+                                        Text(
+                                            '${singleRoutine.startTime} - ${singleRoutine.endTime}'),
+                                        showEditIcon: false,
+                                        placeholder: false,
+                                      ),
+                                      DataCell(
+                                        Text(singleRoutine.location),
+                                        showEditIcon: false,
+                                        placeholder: false,
+                                      )
+                                    ],
+                                  ),
+                                )
+                                .toList()),
+                      ),
                       const Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(
@@ -179,73 +253,6 @@ class _RoutineViewState extends ConsumerState<RoutineView> {
                     ],
                   ),
                 },
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     const Padding(
-                //       padding: EdgeInsets.all(20),
-                //       child: Text(
-                //         "Kritipur",
-                //         style: TextStyle(
-                //           fontSize: 21,
-                //         ),
-                //       ),
-                //     ),
-                //     SingleChildScrollView(
-                //       scrollDirection: Axis.horizontal,
-                //       child: DataTable(
-                //           columns: const <DataColumn>[
-                //             DataColumn(
-                //               label: Expanded(
-                //                 child: Text(
-                //                   'Day',
-                //                   style: TextStyle(fontWeight: FontWeight.bold),
-                //                 ),
-                //               ),
-                //             ),
-                //             DataColumn(
-                //               label: Expanded(
-                //                 child: Text(
-                //                   'Time',
-                //                   style: TextStyle(fontWeight: FontWeight.bold),
-                //                 ),
-                //               ),
-                //             ),
-                //             DataColumn(
-                //               label: Expanded(
-                //                 child: Text(
-                //                   'Location',
-                //                   style: TextStyle(fontWeight: FontWeight.bold),
-                //                 ),
-                //               ),
-                //             ),
-                //           ],
-                //           rows: data.tripureshwor
-                //               .map(
-                //                 (name) => DataRow(
-                //                   cells: [
-                //                     DataCell(
-                //                       Text(name.day),
-                //                       showEditIcon: false,
-                //                       placeholder: false,
-                //                     ),
-                //                     DataCell(
-                //                       Text(name.time),
-                //                       showEditIcon: false,
-                //                       placeholder: false,
-                //                     ),
-                //                     DataCell(
-                //                       Text(name.location),
-                //                       showEditIcon: false,
-                //                       placeholder: false,
-                //                     )
-                //                   ],
-                //                 ),
-                //               )
-                //               .toList()),
-                //     )
-                //   ],
-                // ),
               ],
             ),
           ),
