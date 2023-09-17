@@ -39,14 +39,20 @@ class _HomeViewState extends ConsumerState<HomeView> {
     user = AuthState.userEntity;
 
     markers = {};
-    myLocation = const LatLng(27.6837614, 85.2907682);
-    secondSourceLocation = const LatLng(27.6837624, 85.2471975);
+    myLocation = const LatLng(27.6920, 85.290000);
+    secondSourceLocation = const LatLng(27.6920, 85.290147);
 
     housePositions = [
-      const LatLng(27.6837614, 85.2907682),
-      const LatLng(27.6531614, 85.2437182),
-      const LatLng(27.6033618, 85.2917641),
+      const LatLng(27.69185, 85.290477),
+      const LatLng(27.69160, 85.290877),
+      const LatLng(27.69134, 85.291377),
+      const LatLng(27.69135, 85.291777),
+      const LatLng(27.69105, 85.292177),
     ];
+
+    var count = 1;
+    var reading1 = 32;
+    var reading2 = 113;
 
     var source1 = Marker(
       markerId: const MarkerId('myLocation'),
@@ -54,18 +60,33 @@ class _HomeViewState extends ConsumerState<HomeView> {
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       infoWindow: const InfoWindow(
         title: 'Pani Tanki (13103m altitude)',
-        snippet: 'Drinking Water Source',
+        snippet: 'Drinking Water Source, 4inch pipe, 20pa pressure',
       ),
     );
     var source2 = Marker(
       markerId: const MarkerId('secondSourceLocation'),
       position: secondSourceLocation,
-      infoWindow: const InfoWindow(
-        title: 'Water Tank (12007m altitude)',
-        snippet: 'Drinking Water Source',
+      infoWindow: InfoWindow(
+        title: 'House 1',
+        snippet:
+            'House $count pressure: ${reading1 -= 2}pa, reading: ${reading2 += 40}}',
       ),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
+
+    for (var element in housePositions) {
+      var houseSource = Marker(
+        markerId: MarkerId(element.toString()),
+        position: element,
+        infoWindow: InfoWindow(
+          title: 'House ${count++}',
+          snippet:
+              'House $count pressure: ${reading1 -= 20}pa, reading: ${reading2 += 40}}',
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      );
+      markers.add(houseSource);
+    }
 
     List<Marker> houseSources = [];
 
@@ -85,12 +106,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
   final _gap = const SizedBox(height: 20);
 
   void _showSimpleNotifications() async {
-    print('Simple Notification got clicked');
-
     AndroidNotificationDetails androidNotificationDetails =
         const AndroidNotificationDetails(
-      'wer',
-      'asdf', // channel name can be anything,
+      'channelId',
+      'channelName',
       priority: Priority.max,
       importance: Importance.max,
       enableLights: true,
@@ -112,7 +131,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     // show the notification
     await notificationsPlugin.show(
-      12333,
+      123,
       'New Notification',
       'Paani aayo',
       notificationDetails,
@@ -131,7 +150,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         actions: [
           IconButton(
             onPressed: () {
-              // _showSimpleNotifications();
+              _showSimpleNotifications();
             },
             icon: const Icon(Icons.notifications_active),
           ),
