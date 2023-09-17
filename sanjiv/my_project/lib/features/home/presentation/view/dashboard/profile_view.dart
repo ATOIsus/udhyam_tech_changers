@@ -151,7 +151,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   Text('Address : ${_user.address}', style: _textStyle),
                   _gap,
                   Text('Contact : ${_user.contactNumber}', style: _textStyle),
-                  _gap,
                 ],
               ),
             ),
