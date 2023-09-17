@@ -18,7 +18,9 @@ class _SupplierDashboardViewState extends ConsumerState<SupplierDashboardView> {
   @override
   Widget build(BuildContext context) {
     var supplierSate = ref.watch(supplierViewModelProvider);
+
     var suppliers = supplierSate.supplierList;
+
     print('Length of supplier list is : ${supplierSate.supplierList.length}');
 
     return SafeArea(
@@ -76,17 +78,17 @@ class _SupplierDashboardViewState extends ConsumerState<SupplierDashboardView> {
                     .map(
                       (e) => DataRow(cells: [
                         DataCell(
-                          StatusCell(status: e.contactNumber),
+                          Text(e.contactNumber),
                           showEditIcon: false,
                           placeholder: false,
                         ),
                         DataCell(
-                          StatusCell(status: e.price),
+                          Text(e.price),
                           showEditIcon: false,
                           placeholder: false,
                         ),
                         DataCell(
-                          Text(e.status),
+                          StatusCell(status: e.status),
                           showEditIcon: false,
                           placeholder: false,
                         ),

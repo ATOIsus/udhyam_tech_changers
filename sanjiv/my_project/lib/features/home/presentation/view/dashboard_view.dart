@@ -2,6 +2,7 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dashboard/home_view.dart';
 import 'dashboard/profile_view.dart';
@@ -37,17 +38,21 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
         label: 'Routine',
         child: Icon(
           Icons.view_list,
+          color: Colors.white,
+
           // color: AppColorConstant.navigationIconColor,
         )),
     const CurvedNavigationBarItem(
-        label: 'Home',
+        label: 'Water Sources',
         child: Icon(
-          Icons.home,
+          FontAwesomeIcons.mapLocationDot,
+          color: Colors.white,
         )),
     const CurvedNavigationBarItem(
         label: 'Profile',
         child: Icon(
           Icons.person,
+          color: Colors.white,
         )),
   ];
 
